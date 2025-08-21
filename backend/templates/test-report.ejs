@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title><%= test.title %> – Report</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 24px; }
+      h1 { margin-bottom: 0; }
+      .meta { color: #666; margin-bottom: 16px; }
+      .section { margin-top: 24px; }
+      .kv td { padding: 4px 8px; vertical-align: top; }
+      img.screenshot { max-width: 100%; margin: 8px 0; }
+      .status-passed { color: #1a7f37; }
+      .status-failed { color: #b42318; }
+      code { background: #f5f5f5; padding: 2px 4px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <h1><%= test.title %></h1>
+    <div class="meta">Project: <%= projectName %> • Run: <%= runId %> • URL: <%= baseURL %></div>
+
+    <div class="section">
+      <h2>Summary</h2>
+      <table class="kv">
+        <tr><td>Status</td><td class="status-<%= test.status %>"><%= (test.status || '').toUpperCase() %></td></tr>
+        <tr><td>Duration</td><td><%= (test.duration/1000).toFixed(2) %>s</td></tr>
+        <tr><td>File</td><td><code><%= test.file %></code></td></tr>
+        <tr><td>Tags</td><td><%= (test.tags || []).join(', ') %></td></tr>
+      </table>
+    </div>
+
+    <% if (test.error) { %>
+      <div class="section">
+        <h2>Error</h2>
+        <pre><%= test.error %></pre>
+      </div>
+    <% } %>
+
+    <% if (screenshots && screenshots.length) { %>
+      <div class="section">
+        <h2>Screenshots</h2>
+        <% screenshots.forEach(s => { %>
+          <img class="screenshot" src="file://<%= s %>" />
+        <% }) %>
+      </div>
+    <% } %>
+  </body>
+</html>
